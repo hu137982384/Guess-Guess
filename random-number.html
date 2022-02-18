@@ -1,10 +1,10 @@
 <!--
  * @Author: 杭州-H5-胡斌
  * @Date: 2022-01-01 20:10:03
- * @LastEditTime: 2022-01-04 10:23:30
+ * @LastEditTime: 2022-02-18 10:42:50
  * @LastEditors: 杭州-H5-胡斌
  * @Description: template content
- * @FilePath: /number/random-number.html
+ * @FilePath: /Guess-Guess/random-number.html
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -12,33 +12,50 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="viewport-fit=contain" />
+    <meta name="viewport" content="viewport-fit=cover" />
+    <meta name="viewport" content="viewport-fit=auto" />
     <title>你猜随机数</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
-    <div>
+    <div class="titleTop">
       <span id="Shownum"></span>
       <span id="number">空值</span>
       <span id="countnumber">0</span>次
       <button onclick='ck("****",8)' class="border">偷看1秒</button>
     </div>
     <div class="red">*数字无重复 首位可为 0</div>
-    <button  class="border resize-to" onclick='buttonClick("*-*-*-*",4,8)'>生成4位随机数 8次</button>
-    <button  class="border resize-to" onclick='buttonClick("*-*-*-*-*",5,12)'>生成5位随机数 12次</button>
-    <button  class="border resize-to" onclick='buttonClick("*-*-*-*-*-*",6,16)'>
+    <button class="border resize-to" onclick='buttonClick("*-*-*-*",4,8)'>
+      生成4位随机数 8次
+    </button>
+    <button class="border resize-to" onclick='buttonClick("*-*-*-*-*",5,12)'>
+      生成5位随机数 12次
+    </button>
+    <button class="border resize-to" onclick='buttonClick("*-*-*-*-*-*",6,16)'>
       生成6位随机数 16次
     </button>
-    <button  class="border resize-to" onclick='buttonClick("*-*-*-*-*-*-*",7,20)'>
+    <button
+      class="border resize-to"
+      onclick='buttonClick("*-*-*-*-*-*-*",7,20)'
+    >
       生成7位随机数 20次
     </button>
-    <button  class="border resize-to" onclick='buttonClick("*-*-*-*-*-*-*-*",8,24)'>
+    <button
+      class="border resize-to"
+      onclick='buttonClick("*-*-*-*-*-*-*-*",8,24)'
+    >
       生成8位随机数 24次
     </button>
     <div>
-      请输入数字： <input class="border"  type="number" id="input" value="" />
+      请输入数字： <input class="border" type="number" id="input" value="" />
       <div>
-        <button onclick='button("********")' class="resize-to resize-to-1">校验</button>
-        <button onclick='buttonbig("********")' class="resize-to resize-to-2">大小</button>
+        <button onclick='button("********")' class="resize-to resize-to-1">
+          校验
+        </button>
+        <button onclick='buttonbig("********")' class="resize-to resize-to-2">
+          大小
+        </button>
       </div>
     </div>
     <button onclick="resize()" class="resize">重玩</button>
@@ -52,7 +69,7 @@
     let countNum = 0; //校验次数
     let indexHtml = ""; //页面的值
     let titleVal = "";
-    let shouNum = '未选择';
+    let shouNum = "未选择";
     function buttonClick(val, sjlength, num) {
       resize();
       let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -61,7 +78,7 @@
       countNum = num;
       randomNumber = f1(sjlength);
       titleVal = val;
-      $("#Shownum").html(sjlength+"位");
+      $("#Shownum").html(sjlength + "位");
     }
     function f1(length) {
       var arr_4 = [];
@@ -111,7 +128,7 @@
         indexHtml = indexHtml + val + "正确" + "<br>";
         $("#myHtml").html(indexHtml);
         setTimeout(() => {
-          alert(randomNumber+" 你赢了");
+          alert(randomNumber + " 你赢了");
           resize();
         }, 1000);
       } else {
@@ -126,7 +143,7 @@
         $("#myHtml").html(indexHtml);
         if (countNum == index) {
           setTimeout(() => {
-            alert(randomNumber+" 失败了，太可惜了。请重试");
+            alert(randomNumber + " 失败了，太可惜了。请重试");
             resize();
           }, 1000);
         }
@@ -148,11 +165,11 @@
     }
     //对的个数
     function correct() {
-      let val = $("#input").val().split('');
+      let val = $("#input").val().split("");
       let random = randomNumber;
-      let arr =  randomNumber.filter((item) => {
+      let arr = randomNumber.filter((item) => {
         return val.find((i) => {
-        return i == item
+          return i == item;
         });
       });
       return arr.length;
@@ -178,12 +195,12 @@
         text = "等于";
       }
       $("#countnumber").html(index);
-      
+
       if (Number(val) == Number(randomNumber.join(""))) {
         indexHtml = indexHtml + val + text + "正确" + "<br>";
         $("#myHtml").html(indexHtml);
         setTimeout(() => {
-          alert(randomNumber+" 你赢了");
+          alert(randomNumber + " 你赢了");
           resize();
         }, 1000);
       } else {
@@ -191,7 +208,7 @@
         $("#myHtml").html(indexHtml);
         if (countNum == index) {
           setTimeout(() => {
-            alert(randomNumber+" 失败了，太可惜了。请重试");
+            alert(randomNumber + " 失败了，太可惜了。请重试");
             resize();
           }, 1000);
         }
@@ -210,7 +227,6 @@
       $("#myHtml").html("");
       $("#input").val("");
       $("#Shownum").html("未选择");
-      
     }
     function ck() {
       if (randomNumber.length > 1) {
@@ -222,6 +238,10 @@
     }
   </script>
   <style>
+    .titleTop {
+      padding-top: constant(safe-area-inset-top);
+      padding-top: env(safe-area-inset-top);
+    }
     #countnumber {
       margin-left: 24px;
     }
@@ -229,7 +249,7 @@
       color: brown;
       margin-top: 8px;
     }
-    .resize{
+    .resize {
       margin-top: 8px;
       background-color: #99d5ff;
       width: 100%;
@@ -239,11 +259,11 @@
       box-sizing: border-box;
       border: 1px solid #99d5ff;
     }
-    .border{
+    .border {
       border: 1px solid #dddfe0;
       margin-top: 8px;
     }
-    .resize-to{
+    .resize-to {
       margin-top: 8px;
       background-color: #dddfe0;
       width: 45%;
@@ -252,17 +272,15 @@
       border-radius: 4px;
       box-sizing: border-box;
     }
-    .resize-to-1{
+    .resize-to-1 {
       border: 1px solid #99d5ff;
       background-color: #dddfe0;
-     
     }
-    .resize-to-2{
+    .resize-to-2 {
       border: 1px solid #99d5ff;
       background-color: #dddfe0;
-      
     }
-    #input{
+    #input {
       height: 32px;
       border-radius: 6px;
     }
