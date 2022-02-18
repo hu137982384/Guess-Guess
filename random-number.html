@@ -1,0 +1,270 @@
+<!--
+ * @Author: 杭州-H5-胡斌
+ * @Date: 2022-01-01 20:10:03
+ * @LastEditTime: 2022-01-04 10:23:30
+ * @LastEditors: 杭州-H5-胡斌
+ * @Description: template content
+ * @FilePath: /number/random-number.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>你猜随机数</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <span id="Shownum"></span>
+      <span id="number">空值</span>
+      <span id="countnumber">0</span>次
+      <button onclick='ck("****",8)' class="border">偷看1秒</button>
+    </div>
+    <div class="red">*数字无重复 首位可为 0</div>
+    <button  class="border resize-to" onclick='buttonClick("*-*-*-*",4,8)'>生成4位随机数 8次</button>
+    <button  class="border resize-to" onclick='buttonClick("*-*-*-*-*",5,12)'>生成5位随机数 12次</button>
+    <button  class="border resize-to" onclick='buttonClick("*-*-*-*-*-*",6,16)'>
+      生成6位随机数 16次
+    </button>
+    <button  class="border resize-to" onclick='buttonClick("*-*-*-*-*-*-*",7,20)'>
+      生成7位随机数 20次
+    </button>
+    <button  class="border resize-to" onclick='buttonClick("*-*-*-*-*-*-*-*",8,24)'>
+      生成8位随机数 24次
+    </button>
+    <div>
+      请输入数字： <input class="border"  type="number" id="input" value="" />
+      <div>
+        <button onclick='button("********")' class="resize-to resize-to-1">校验</button>
+        <button onclick='buttonbig("********")' class="resize-to resize-to-2">大小</button>
+      </div>
+    </div>
+    <button onclick="resize()" class="resize">重玩</button>
+    <div id="myHtml"></div>
+  </body>
+  <script type="text/javascript">
+    let randomNumber = 0; //随机得值
+    let index = 0; //校验次数
+    let length = 0; //值得位数
+    let inputVal = ""; //输入的值
+    let countNum = 0; //校验次数
+    let indexHtml = ""; //页面的值
+    let titleVal = "";
+    let shouNum = '未选择';
+    function buttonClick(val, sjlength, num) {
+      resize();
+      let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      let l1 = $("#number").html(val);
+      length = sjlength;
+      countNum = num;
+      randomNumber = f1(sjlength);
+      titleVal = val;
+      $("#Shownum").html(sjlength+"位");
+    }
+    function f1(length) {
+      var arr_4 = [];
+      function getRandom(min, max) {
+        //开始取数
+        //随机数
+        var random = Math.random() * (max - min) + min;
+        //向下取整
+        random = Math.floor(random);
+        if (arr_4.length < length) {
+          //判断数组长度
+          for (
+            i = 0;
+            i <= arr_4.length;
+            i++ //遍历数组。
+          ) {
+            if (random == arr_4[i]) {
+              //比较随机数
+              break;
+            } else {
+              if (i == arr_4.length) {
+                arr_4.push(random);
+                break;
+              }
+            }
+          }
+          getRandom(0, 10);
+        }
+      }
+      getRandom(0, 10); //随机取0-9
+      return arr_4;
+    }
+    function button() {
+      let val = $("#input").val();
+      if (length == 0) {
+        alert("请选择随机数");
+        return;
+      }
+      if (!val || val.length != length) {
+        alert("值不对,请重新输入");
+        return;
+      }
+      let orderlength = order(); //顺序
+      let correctlength = correct(); //对的个数
+      index += 1;
+      if (Number(val) == Number(randomNumber.join(""))) {
+        indexHtml = indexHtml + val + "正确" + "<br>";
+        $("#myHtml").html(indexHtml);
+        setTimeout(() => {
+          alert(randomNumber+" 你赢了");
+          resize();
+        }, 1000);
+      } else {
+        indexHtml =
+          indexHtml +
+          val +
+          " 顺序对 " +
+          orderlength +
+          " 数字对 " +
+          correctlength +
+          " <br> ";
+        $("#myHtml").html(indexHtml);
+        if (countNum == index) {
+          setTimeout(() => {
+            alert(randomNumber+" 失败了，太可惜了。请重试");
+            resize();
+          }, 1000);
+        }
+      }
+      $("#countnumber").html(index);
+      $("#input").val("");
+    }
+    //顺序
+    function order() {
+      let val = $("#input").val().split("");
+      let random = randomNumber;
+      let sxNumber = 0;
+      for (let i = 0; i < val.length; i++) {
+        if (randomNumber[i] == val[i]) {
+          sxNumber += 1;
+        }
+      }
+      return sxNumber;
+    }
+    //对的个数
+    function correct() {
+      let val = $("#input").val().split('');
+      let random = randomNumber;
+      let arr =  randomNumber.filter((item) => {
+        return val.find((i) => {
+        return i == item
+        });
+      });
+      return arr.length;
+    }
+
+    function buttonbig() {
+      let val = $("#input").val();
+      if (length == 0) {
+        alert("请选择随机数");
+        return;
+      }
+      if (!val || val.length != length) {
+        alert("值不对,请重新输入");
+        return;
+      }
+      index += 1;
+      let text = "小于";
+      if (Number(val) > Number(randomNumber.join(""))) {
+        text = "太大";
+      } else if (Number(val) < Number(randomNumber.join(""))) {
+        text = "太小";
+      } else {
+        text = "等于";
+      }
+      $("#countnumber").html(index);
+      
+      if (Number(val) == Number(randomNumber.join(""))) {
+        indexHtml = indexHtml + val + text + "正确" + "<br>";
+        $("#myHtml").html(indexHtml);
+        setTimeout(() => {
+          alert(randomNumber+" 你赢了");
+          resize();
+        }, 1000);
+      } else {
+        indexHtml = indexHtml + val + text + "<br>";
+        $("#myHtml").html(indexHtml);
+        if (countNum == index) {
+          setTimeout(() => {
+            alert(randomNumber+" 失败了，太可惜了。请重试");
+            resize();
+          }, 1000);
+        }
+      }
+      $("#input").val("");
+    }
+    function resize() {
+      index = 0;
+      length = 0;
+      inputVal = "";
+      countNum = 0;
+      indexHtml = "";
+      titleVal = "";
+      $("#number").html("空值");
+      $("#countnumber").html(0);
+      $("#myHtml").html("");
+      $("#input").val("");
+      $("#Shownum").html("未选择");
+      
+    }
+    function ck() {
+      if (randomNumber.length > 1) {
+        $("#number").html(randomNumber.join(""));
+        setTimeout(() => {
+          $("#number").html(titleVal);
+        }, 1500);
+      }
+    }
+  </script>
+  <style>
+    #countnumber {
+      margin-left: 24px;
+    }
+    .red {
+      color: brown;
+      margin-top: 8px;
+    }
+    .resize{
+      margin-top: 8px;
+      background-color: #99d5ff;
+      width: 100%;
+      height: 32px;
+      border-radius: 4px;
+      padding: 0 24px;
+      box-sizing: border-box;
+      border: 1px solid #99d5ff;
+    }
+    .border{
+      border: 1px solid #dddfe0;
+      margin-top: 8px;
+    }
+    .resize-to{
+      margin-top: 8px;
+      background-color: #dddfe0;
+      width: 45%;
+      height: 32px;
+      text-align: center;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .resize-to-1{
+      border: 1px solid #99d5ff;
+      background-color: #dddfe0;
+     
+    }
+    .resize-to-2{
+      border: 1px solid #99d5ff;
+      background-color: #dddfe0;
+      
+    }
+    #input{
+      height: 32px;
+      border-radius: 6px;
+    }
+  </style>
+</html>
